@@ -1,0 +1,199 @@
+﻿@model IEnumerable< Group_Project.SendContend>
+    @{
+    ViewBag.Title = "viewReport";
+    Layout = "~/Views/Shared/_layoutManager.cshtml";
+    }
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="~/Views/MarkettingManager/demo.css" media="all" />
+    <script src="~/Scripts/Chart.min.js"></script>
+    <link rel="icon" href="http://www.thuthuatweb.net/wp-content/themes/HostingSite/favicon.ico" type="image/x-ico" />
+</head>
+<body>
+    <div style="float:left;width:100%;background-color:antiquewhite">
+        <div style="background-color:burlywood; width:100%;height:60%; align-items:center">
+            <h2 style="text-align:center">Overall Report</h2>
+            <div style=" width:25%;  float:left; margin-top:5%; margin-left:3%">
+                <table>
+                    <tr>
+                        <th>
+                            Specs
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Total POst</td>
+                        <td style="text-align:center" id="total">@Session["Total"]</td>
+                    </tr>
+                    <tr>
+                        <td>New Post</td>
+                        <td style="text-align:center" id="new">@Session["New"]</td>
+                    </tr>
+                    <tr>
+                        <td>Accept Post</td>
+                        <td style="text-align:center" id="accept">@Session["Accepted"]</td>
+                    </tr>
+                    <tr>
+                        <td>Cancelled POst</td>
+                        <td style="text-align:center" id="Cancel">@Session["Cancel"]</td>
+                    </tr>
+                    <tr>
+                        <td>Require Change</td>
+                        <td style="text-align:center" id="RC">@Session["RC"]</td>
+                    </tr>
+                    <tr>
+                        <td>Changed Post</td>
+                        <td style="text-align:center" id="Change">@Session["Change"]</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="width:50%; float:left">
+                <!-- pie chart canvas element -->
+                <canvas id="countries" width="500" height="350"></canvas>
+                <script type="text/javascript">
+                    var newp = parseInt(document.getElementById("new").innerText);
+                    var cancel = parseInt(document.getElementById("Cancel").innerText);
+                    var accept = parseInt(document.getElementById("accept").innerText);
+                    var RC = parseInt(document.getElementById("RC").innerText);
+                    var change = parseInt(document.getElementById("Change").innerText);
+                    ///alert(newp);
+                    // pie chart data
+                    var pieData = [
+                        {
+
+                            value: newp,
+                            color: "#878BB6",
+                        },
+                        {
+                            value: cancel,
+                            color: "#4ACAB4"
+                        },
+                        {
+                            value: accept,
+                            color: "#FF8153"
+                        },
+                        {
+                            value: change,
+                            color: "#FFCC99"
+                        },
+                        {
+                            value: RC,
+                            color: "#FFEA78"
+                        }
+
+                    ];
+
+                    // pie chart options
+                    var pieOptions = {
+                        segmentShowStroke: false,
+                        animateScale: true
+                    }
+
+                    // get pie chart canvas
+                    var countries = document.getElementById("countries").getContext("2d");
+
+                    // draw pie chart
+                    new Chart(countries).Pie(pieData, pieOptions);
+                </script>
+            </div>
+            <div style=" float:left; width:20%; margin-top:5%">
+                <div>
+                    <div style="background-color:#878BB6; width:20px; height:20px; float:left"></div>
+                    <label style="margin-left:3%">New Post</label>
+                </div>
+                <div>
+                    <div style="background-color:#FF8153; width:20px; height:20px; float:left"></div>
+                    <label style="margin-left:3%; clear:left">Accepted Post</label>
+                </div>
+                <div>
+                    <div style="background-color:#4ACAB4; width:20px; height:20px; float:left"></div>
+                    <label style="margin-left:3%">Cancelled Post</label>
+                </div>
+                <div>
+                    <div style="background-color:#FFEA78; width:20px; height:20px; float:left"></div>
+                    <label style="margin-left:3%">Required Change</label>
+                </div>
+                <div>
+                    <div style="background-color:#FFCC99; width:20px; height:20px; float:left"></div>
+                    <label style="margin-left:3%">Changed Post</label>
+                </div>
+            </div>
+        </div>
+        <div style="background-color:antiquewhite">
+            <h2 style="text-align:center">Report By Date</h2>
+            <h2 style="text-align:center">@ViewBag.Message</h2>
+            <div style="margin-left:20%; margin-top:3%; margin-bottom:2%">
+                @using (Html.BeginForm("Search", "MarkettingManager"))
+                {
+                <div class="form-group">
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-4">
+                            @Html.Label("Start Date")
+                            @Html.TextBox("txtStartDate", @Session["txtStartDate"], new { @class = "form-control", @type = "date" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("End Date")
+                            @Html.TextBox("txtEndDate", @Session["txtEndDate"], new { @class = "form-control", @type = "date" })
+                        </div>
+                        <div class="col-md-4" style="margin-top:20px">
+                            <input class="btn btn-default" type="submit" value="Search" />
+                        </div>
+                    </div>
+                </div>
+                }
+
+            </div>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.Label("Total")
+                    </th>
+                    <th>
+                        @Html.Label("New Post")
+                    </th>
+                    <th>
+                        @Html.Label("Accepted Post")
+                    </th>
+                    <th>
+                        @Html.Label("Cacellced Post")
+                    </th>
+                    <th>
+                        @Html.Label("Require Change")
+                    </th>
+                    <th>
+                        @Html.Label("Change Post")
+                    </th>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Session["totalByDate"]
+                    </td>
+                    <td>
+                        @Session["newByDate"]
+                    </td>
+                    <td>
+                        @Session["acceptByDate"]
+                    </td>
+                    <td>
+                        @Session["cancelByDate"]
+                    </td>
+                    <td>
+                        @Session["rcByDate"]
+                    </td>
+                    <td>
+                        @Session["changedByDate"]
+                    </td>
+                </tr>
+
+
+            </table>
+
+        </div>
+    </div>
+</body>

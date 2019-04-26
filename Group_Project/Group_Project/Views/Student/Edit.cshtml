@@ -1,0 +1,47 @@
+﻿@model Group_Project.SendContend
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("DoEdit", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>SendContend</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.id)
+
+    <div class="form-group">
+        @Html.Label("Image", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.img, new { htmlAttributes = new { @class = "form-control" } })*@
+            <img src="@Url.Content(@Model.imageContend)" width="200" height="150" />
+            @Html.TextBox("file", "", new { type = "file" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Word", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.wordContend, new { htmlAttributes = new { @readonly = "true", @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.wordContend, "", new { @class = "text-danger" })
+
+            @Html.TextBox("file1", "", new { type = "file" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
